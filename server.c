@@ -14,17 +14,24 @@
 
 void	ft_sighandler(int signum, siginfo_t *info, void *context)
 {
-	static int             i;
+	int             b = 0;
     static pid_t           src_pid;
-    static unsigned char   c;
-
+/*    static unsigned char   c;
+*/
     (void)context;
     if (src_pid == 0)
         src_pid = info->si_pid;
+    if (signum == SIGUSR1)
+        b = 0;
+    else if (signum == SIGUSR2)
+        b = 1;
+
     ft_printf("I feel a signal from: %d\n", src_pid);
-    i = 0;
-    c = 0;
-    c |= (signum == SIGUSR2);
+    ft_printf("Signal number %d\n", b);
+
+
+
+/*
     if (++i == 8)
     {
         i = 0;
@@ -40,7 +47,7 @@ void	ft_sighandler(int signum, siginfo_t *info, void *context)
     }
     else
         c <<= 1;
-
+*/
 }
 
 
@@ -60,7 +67,6 @@ int main()
 	sigaction(SIGUSR2, &sigact, NULL);
 
 	while (1)
-		sleep(1);
-
-	return 0;
+		pause();
+    return (0);
 }

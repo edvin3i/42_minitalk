@@ -12,56 +12,45 @@
 #include "include/minitalk.h"
 #include "include/libft.h"
 
-void    ft_sendchar(pid_t pid, char c)
-{
-    int curr_bit;
 
-    curr_bit = 0;
-    while(curr_bit <= 7)
+void ft_sendchar(pid_t pid, char c)
+{
+    int i = 7;
+    while(i >= 0)
     {
-        if (c & (1 << curr_bit))
-            kill(pid, SIGUSR1);
-        else
+        if (c & (1 << i))
+        {
             kill(pid, SIGUSR2);
-        curr_bit++;
+            ft_putchar('1');
+        }
+        else
+        {
+            kill(pid, SIGUSR1);
+            ft_putchar('0');
+        }
+        i--;
     }
 }
 
-void printbincharpad(char c)
-{
-    for (int i = 7; i >= 0; --i)
-    {
-        ft_putchar( (c & (1 << i)) ? '1' : '0' );
-    }
-    putchar('\n');
-}
 
 int     main(int argc, char **argv)
 {
 	pid_t	serv_pid;
-    int     i;
-	char	c;
-	struct	sig;
+
 
 	if (argc != 3 && !argv[2])
 		return (1);
 	else
 	{
-		serv_pid = atoi(argv[1]);
-        i = 0;
-        while (argv[2][i])
+		serv_pid = ft_atoi(argv[1]);
+
+        ft_printf("PID: %d\n", serv_pid);
+        while (*argv[2])
         {
-            c = argv[2][i];
-            ft_sendchar(serv_pid, c);
-            i++;
+            ft_sendchar(serv_pid,*argv[2]);
+            argv[2]++;
         }
-
 	}
-
-
-	printf("PID: %d\n", serv_pid);
-    while (argv[2])
-    printbincharpad()
 
 	return 0;
 }
