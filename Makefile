@@ -28,7 +28,7 @@ SDEPS		=	$(patsubst %.c,%.d,$(SSRC))
 CDEPS		=	$(patsubst %.c,%.d,$(CSRC))
 
 CC			=	cc
-CFLAGS		=	 -MD
+CFLAGS		=	-Wall -Werror -Wextra -MD
 RM			=	rm -rf
 
 override		OBJS_ALL ?= $(SOBJS) $(COBJS)

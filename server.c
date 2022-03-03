@@ -20,6 +20,7 @@ void	ft_sighandler(int signum, siginfo_t *info, void *context)
     static pid_t           src_pid;
     static unsigned char   c;
 
+    (void)context;
     if (src_pid == 0)
         src_pid = info->si_pid;
     ft_printf("I feel a signal from: %d\n", src_pid);
@@ -46,13 +47,14 @@ void	ft_sighandler(int signum, siginfo_t *info, void *context)
 
 
 
-int main(int argc, char **argv)
+int main()
 {
     pid_t 	self_pid;
     struct	sigaction sigact;
 
 	self_pid = getpid();
 	ft_printf("Server PID: %d\n", self_pid);
+
 
 	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_sigaction = ft_sighandler;
