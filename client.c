@@ -6,13 +6,11 @@
 /*   By: gbreana <gbreana@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 12:19:54 by gbreana           #+#    #+#             */
-/*   Updated: 2022/02/21 15:14:47 by gbreana          ###   ########.fr       */
+/*   Updated: 2022/02/22 15:14:47 by gbreana          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "include/minitalk.h"
 #include "include/libft.h"
-
-#include <stdio.h>
 
 void    ft_sendchar(pid_t pid, char c)
 {
@@ -27,6 +25,15 @@ void    ft_sendchar(pid_t pid, char c)
             kill(pid, SIGUSR2);
         curr_bit++;
     }
+}
+
+void printbincharpad(char c)
+{
+    for (int i = 7; i >= 0; --i)
+    {
+        ft_putchar( (c & (1 << i)) ? '1' : '0' );
+    }
+    putchar('\n');
 }
 
 int     main(int argc, char **argv)
@@ -53,6 +60,8 @@ int     main(int argc, char **argv)
 
 
 	printf("PID: %d\n", serv_pid);
+    while (argv[2])
+    printbincharpad()
 
 	return 0;
 }

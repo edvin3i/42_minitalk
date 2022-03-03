@@ -6,13 +6,11 @@
 /*   By: gbreana <gbreana@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 12:19:54 by gbreana           #+#    #+#             */
-/*   Updated: 2022/02/21 15:14:47 by gbreana          ###   ########.fr       */
+/*   Updated: 2022/02/22 15:14:47 by gbreana          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "include/minitalk.h"
 #include "include/libft.h"
-
-
 
 void	ft_sighandler(int signum, siginfo_t *info, void *context)
 {
@@ -62,7 +60,7 @@ int main()
 	sigaction(SIGUSR2, &sigact, NULL);
 
 	while (1)
-		usleep(100);
+		sleep(1);
 
 	return 0;
 }
