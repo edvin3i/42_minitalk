@@ -14,23 +14,45 @@
 
 #include <stdio.h>
 
-int main(int argc, char **argv)
+void    ft_sendchar(pid_t pid, char c)
 {
-	int 	pid;
-	char	msg;
+    int curr_bit;
+
+    curr_bit = 0;
+    while(curr_bit <= 7)
+    {
+        if (c & (1 << curr_bit))
+            kill(pid, SIGUSR1);
+        else
+            kill(pid, SIGUSR2);
+        curr_bit++;
+    }
+}
+
+int     main(int argc, char **argv)
+{
+	pid_t	serv_pid;
+    int     i;
+	char	c;
 	struct	sig;
 
 	if (argc != 3 && !argv[2])
 		return (1);
 	else
 	{
-		pid = ft_atoi(argv[1]);
-		kill(pid, SIGUSR1);
+		serv_pid = atoi(argv[1]);
+        i = 0;
+        while (argv[2][i])
+        {
+            c = argv[2][i];
+            ft_sendchar(serv_pid, c);
+            i++;
+        }
 
 	}
 
 
-	printf("PID: %d\n", pid);
+	printf("PID: %d\n", serv_pid);
 
 	return 0;
 }

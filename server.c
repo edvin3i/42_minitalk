@@ -12,23 +12,47 @@
 #include "include/minitalk.h"
 #include "include/libft.h"
 
-#include <stdio.h>
 
-void	ft_sighandler(int signum, siginfo_t *signal, void *context)
+
+void	ft_sighandler(int signum, siginfo_t *info, void *context)
 {
-	ft_printf("I feel a signal\n");
-	sleep(1);
+	static int             i;
+    static pid_t           src_pid;
+    static unsigned char   c;
+
+    if (src_pid == 0)
+        src_pid = info->si_pid;
+    ft_printf("I feel a signal from: %d\n", src_pid);
+    i = 0;
+    c = 0;
+    c |= (signum == SIGUSR2);
+    if (++i == 8)
+    {
+        i = 0;
+        if (!c)
+        {
+            kill(src_pid, SIGUSR2);
+            src_pid = 0;
+            return ;
+        }
+        putchar(c);
+        c = 0;
+        kill(src_pid, SIGUSR1);
+    }
+    else
+        c <<= 1;
+
 }
 
 
 
 int main(int argc, char **argv)
 {
-	int 	self_pid;
-	struct	sigaction sigact;
+    pid_t 	self_pid;
+    struct	sigaction sigact;
 
 	self_pid = getpid();
-	ft_printf("PID: %d\n", self_pid);
+	ft_printf("Server PID: %d\n", self_pid);
 
 	sigact.sa_flags = SA_SIGINFO;
 	sigact.sa_sigaction = ft_sighandler;

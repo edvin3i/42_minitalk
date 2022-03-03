@@ -85,8 +85,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
  * For ft_printf
  */
 int	ft_printf(const char *format, ...);
-int	ft_parser(const char *str, va_list args);
-int	ft_type_handler(int c, va_list args);
+static int	ft_parser(const char *str, va_list args);
+static int	ft_type_handler(int c, va_list args);
 int	ft_putchar(char c);
 int	ft_putstr(char *str);
 int	ft_putnbr(int num);
