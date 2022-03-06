@@ -6,48 +6,43 @@
 /*   By: gbreana <gbreana@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 12:19:54 by gbreana           #+#    #+#             */
-/*   Updated: 2022/02/22 15:14:47 by gbreana          ###   ########.fr       */
+/*   Updated: 2022/03/06 13:43:00 by gbreana          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "include/minitalk.h"
 #include "include/libft.h"
 
+
 void	ft_sighandler(int signum, siginfo_t *info, void *context)
 {
-	int             b = 0;
-    static pid_t           src_pid;
-/*    static unsigned char   c;
-*/
+	static int              bit = 0;
+    static pid_t            src_pid;
+    static unsigned char    c = 0;
+
     (void)context;
+
     if (src_pid == 0)
         src_pid = info->si_pid;
-    if (signum == SIGUSR1)
-        b = 0;
-    else if (signum == SIGUSR2)
-        b = 1;
-
-    ft_printf("I feel a signal from: %d\n", src_pid);
-    ft_printf("Signal number %d\n", b);
-
-
-
-/*
-    if (++i == 8)
+    if (signum == SIGUSR2)
     {
-        i = 0;
-        if (!c)
-        {
-            kill(src_pid, SIGUSR2);
-            src_pid = 0;
-            return ;
-        }
-        putchar(c);
-        c = 0;
-        kill(src_pid, SIGUSR1);
+        c |= (1 << bit);
+        ft_putchar('1');
     }
-    else
-        c <<= 1;
-*/
+    else if (signum == SIGUSR1)
+    {
+        ft_putchar('0');
+    }
+
+    if (bit++ == 7)
+    {
+        ft_putchar('\n');
+        ft_putchar(c);
+        ft_putchar('\n');
+        c = 0xFF;
+        bit = 0;
+    }
+
+
 }
 
 
@@ -65,6 +60,7 @@ int main()
 	sigact.sa_sigaction = ft_sighandler;
 	sigaction(SIGUSR1, &sigact, NULL);
 	sigaction(SIGUSR2, &sigact, NULL);
+    sigemptyset(&sigact.sa_mask);
 
 	while (1)
 		pause();

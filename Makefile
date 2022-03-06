@@ -6,7 +6,7 @@
 #    By: gbreana <gbreana@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 12:40:04 by gbreana           #+#    #+#              #
-#    Updated: 2021/11/17 23:36:32 by gbreana          ###   ########.fr        #
+#    Updated: 2022/03/06 13:42:40 by gbreana          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CNAME		=	client
 
 INCL		=	include/minitalk.h
 
-LIB			=	-L./libft -lft
+LIB			=	-L ./libft -lft
 LIBFT		=	libft.a
 
 SSRC		=	server.c
