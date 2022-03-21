@@ -84,13 +84,13 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /*
  * For ft_printf
  */
-int	ft_printf(const char *format, ...);
-int	ft_putchar(char c);
-int	ft_putstr(char *str);
-int	ft_putnbr(int num);
-int	ft_puthex(unsigned long num, int c);
-int	ft_putptr(uintptr_t num);
-int	ft_putunbr(unsigned int num);
-int	ft_strchri(const char *str, int c);
+int		ft_printf(const char *format, ...);
+int		ft_putchar(char c);
+int		ft_putstr(char *str);
+int		ft_putnbr(int num);
+int		ft_puthex(unsigned long num, int c);
+int		ft_putptr(uintptr_t num);
+int		ft_putunbr(unsigned int num);
+int		ft_strchri(const char *str, int c);
 
 #endif

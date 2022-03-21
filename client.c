@@ -12,51 +12,63 @@
 #include "include/minitalk.h"
 #include "include/libft.h"
 
+char	*g_message;
 
-void ft_sendchar(pid_t pid, char c)
+void	ft_sendchar(pid_t pid, char c)
 {
-    int bit;
+	int	bit;
 
-    bit = 7;
-    while(bit >= 0)
-    {
-        if (c & (1 << bit))
-        {
-            kill(pid, SIGUSR2);
-            ft_putchar('1');
-        }
-        else
-        {
-            kill(pid, SIGUSR1);
-            ft_putchar('0');
-        }
-        bit--;
-        usleep(1000);
-    }
+	bit = 7;
+	while (bit >= 0)
+	{
+		if (c & (1 << bit))
+			kill(pid, SIGUSR2);
+		else
+			kill(pid, SIGUSR1);
+		bit--;
+		usleep(50);
+	}
+	g_message++;
 }
 
-
-int     main(int argc, char **argv)
+void	ft_resphandler(pid_t signum, siginfo_t *info, void *context)
 {
-	pid_t	serv_pid;
+	pid_t	srv_pid;
 
+	(void)context;
+	if (info->si_pid)
+		srv_pid = info->si_pid;
+	if (signum == SIGUSR1)
+		ft_sendchar(srv_pid, *g_message);
+	else if (signum == SIGUSR2)
+		exit(0);
+}
 
-	if (argc != 3 && !argv[2])
-		return (1);
-	else
+int	main(int argc, char **argv)
+{
+	struct sigaction			act;
+	sigset_t					set;
+
+	if (argc != 3 || !argv[2])
 	{
-		serv_pid = ft_atoi(argv[1]);
-
-        ft_printf("PID: %d\n", serv_pid);
-        while (*argv[2])
-        {
-            ft_putchar(*argv[2]);
-            ft_putchar('\n');
-            ft_sendchar(serv_pid,*argv[2]);
-            ft_putchar('\n');
-            argv[2]++;
-        }
+		ft_printf("Usage: ./client PID STRING\n");
+		return (1);
 	}
-
-	return 0;
+	act.sa_flags = SA_SIGINFO;
+	sigemptyset(&set);
+	sigaddset(&set, SIGUSR1);
+	sigaddset(&set, SIGUSR2);
+	act.sa_mask = set;
+	act.sa_sigaction = ft_resphandler;
+	if ((sigaction(SIGUSR1, &act, NULL) != 0) || \
+					(sigaction(SIGUSR2, &act, NULL) != 0))
+	{
+		ft_printf("Sigaction error!");
+		return (1);
+	}
+	g_message = argv[2];
+	ft_sendchar(ft_atoi(argv[1]), *g_message++);
+	while (1)
+		pause();
+	return (0);
 }
