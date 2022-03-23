@@ -9,12 +9,14 @@
 /*   Updated: 2022/03/06 13:43:08 by gbreana          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "include/minitalk.h"
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "include/libft.h"
 
 char	*g_message;
 
-void	ft_sendchar(pid_t pid, char c)
+void	ft_sendchar(pid_t pid, const unsigned char c)
 {
 	int	bit;
 
@@ -41,7 +43,10 @@ void	ft_resphandler(pid_t signum, siginfo_t *info, void *context)
 	if (signum == SIGUSR1)
 		ft_sendchar(srv_pid, *g_message);
 	else if (signum == SIGUSR2)
+	{
+		ft_printf("\nMessage sent!\n");
 		exit(0);
+	}
 }
 
 int	main(int argc, char **argv)

@@ -9,7 +9,8 @@
 /*   Updated: 2022/03/06 13:43:00 by gbreana          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "include/minitalk.h"
+#include <signal.h>
+#include <unistd.h>
 #include "include/libft.h"
 
 void	ft_sighandler(int signum, siginfo_t *info, void *context)

@@ -13,8 +13,6 @@
 SNAME		=	server
 CNAME		=	client
 
-INCL		=	include/minitalk.h
-
 LIB			=	-L ./libft -lft
 LIBFT		=	libft.a
 
@@ -34,8 +32,8 @@ RM			=	rm -rf
 override		OBJS_ALL ?= $(SOBJS) $(COBJS)
 override		DEP_ALL ?= $(SDEPS) $(CDEPS)
 
-.c.o:
-				$(CC) $(CFLAGS) -I $(INCL) -c $< -o ${<:.c=.o}
+%.o:			%.c Makefile libft/libft.a
+				$(CC) $(CFLAGS) -c $< -o ${<:.c=.o}
 
 
 all:			$(LIBFT) $(SNAME) $(CNAME)
@@ -43,12 +41,14 @@ all:			$(LIBFT) $(SNAME) $(CNAME)
 $(LIBFT):
 				@make -C libft
 
-$(SNAME):		$(SOBJS) $(INCL)
+
+$(SNAME):		$(LIBFT) $(SOBJS)
 				@$(CC) $(SOBJS) $(LIB) -o $@
 
-$(CNAME):		$(COBJS) $(INCL)
+$(CNAME):		$(LIBFT) $(COBJS)
 				@$(CC) $(COBJS) $(LIB) -o $@
 
+$(NAME):		$(LIBFT) $(CNAME) $(SNAME)
 
 clean:
 				@make clean -C libft
